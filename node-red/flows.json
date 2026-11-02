@@ -1,0 +1,840 @@
+[
+  {
+    "id": "a82f800daf744f8e",
+    "type": "tab",
+    "label": "Dashboard IoT KLP 7 (Gold)",
+    "disabled": false,
+    "info": "Dashboard MQTT ESP32 kelompok 7"
+  },
+  {
+    "id": "broker_172_20_10_2",
+    "type": "mqtt-broker",
+    "name": "Mosquitto Laptop 172.20.10.2",
+    "broker": "172.20.10.2",
+    "port": "1883",
+    "clientid": "nodered-klp7-dashboard",
+    "autoConnect": true,
+    "usetls": false,
+    "protocolVersion": "4",
+    "keepalive": "15",
+    "cleansession": true
+  },
+  {
+    "id": "d02d5402831c4126",
+    "type": "ui_tab",
+    "name": "Monitoring KLP 7",
+    "icon": "dashboard",
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "group_charts",
+    "type": "ui_group",
+    "name": "Grafik Suhu Semua Ruangan",
+    "tab": "d02d5402831c4126",
+    "order": 1,
+    "disp": true,
+    "width": "12",
+    "collapse": false
+  },
+  {
+    "id": "group_r1",
+    "type": "ui_group",
+    "name": "ruang1",
+    "tab": "d02d5402831c4126",
+    "order": 2,
+    "disp": true,
+    "width": "6",
+    "collapse": false
+  },
+  {
+    "id": "group_r2",
+    "type": "ui_group",
+    "name": "ruang2",
+    "tab": "d02d5402831c4126",
+    "order": 3,
+    "disp": true,
+    "width": "6",
+    "collapse": false
+  },
+  {
+    "id": "group_r3",
+    "type": "ui_group",
+    "name": "ruang3",
+    "tab": "d02d5402831c4126",
+    "order": 4,
+    "disp": true,
+    "width": "6",
+    "collapse": false
+  },
+  {
+    "id": "group_r4",
+    "type": "ui_group",
+    "name": "ruang4",
+    "tab": "d02d5402831c4126",
+    "order": 5,
+    "disp": true,
+    "width": "6",
+    "collapse": false
+  },
+  {
+    "id": "997d4aeba75f49d5",
+    "type": "mqtt out",
+    "z": "a82f800daf744f8e",
+    "name": "Kirim perintah LED (QoS 1)",
+    "topic": "",
+    "qos": "1",
+    "retain": "false",
+    "broker": "broker_172_20_10_2",
+    "x": 880,
+    "y": 80,
+    "wires": []
+  },
+  {
+    "id": "c0f09f3b3785492e",
+    "type": "mqtt in",
+    "z": "a82f800daf744f8e",
+    "name": "Terima suhu semua ruangan",
+    "topic": "pens/klp7/+/temperature",
+    "qos": "0",
+    "datatype": "auto",
+    "broker": "broker_172_20_10_2",
+    "x": 150,
+    "y": 80,
+    "wires": [
+      [
+        "9a837b1dc7574ff8"
+      ]
+    ]
+  },
+  {
+    "id": "9a837b1dc7574ff8",
+    "type": "function",
+    "z": "a82f800daf744f8e",
+    "name": "Format suhu untuk chart",
+    "func": "const p=(msg.topic||\"\").split(\"/\"); const v=Number(msg.payload); if(!Number.isFinite(v)) return null; msg.topic=p[2]||\"ruangan\"; msg.payload=v; return msg;",
+    "outputs": 1,
+    "x": 390,
+    "y": 80,
+    "wires": [
+      [
+        "0c2ad97260bd4a70"
+      ]
+    ]
+  },
+  {
+    "id": "0c2ad97260bd4a70",
+    "type": "ui_chart",
+    "z": "a82f800daf744f8e",
+    "name": "Grafik suhu empat ruangan",
+    "group": "group_charts",
+    "order": 1,
+    "width": "12",
+    "height": "5",
+    "label": "Suhu tiap ruangan (°C)",
+    "chartType": "line",
+    "legend": "true",
+    "xformat": "HH:mm:ss",
+    "interpolate": "bezier",
+    "nodata": "Menunggu data MQTT...",
+    "ymin": 0,
+    "ymax": 50,
+    "removeOlder": 1,
+    "removeOlderUnit": "3600",
+    "colors": [
+      "#1f77b4",
+      "#ff7f0e",
+      "#2ca02c",
+      "#d62728"
+    ],
+    "x": 650,
+    "y": 80,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "mqtt_hum_r1",
+    "type": "mqtt in",
+    "z": "a82f800daf744f8e",
+    "name": "MQTT kelembapan ruang1",
+    "topic": "pens/klp7/ruang1/humidity",
+    "qos": "0",
+    "datatype": "auto",
+    "broker": "broker_172_20_10_2",
+    "x": 150,
+    "y": 180,
+    "wires": [
+      [
+        "func_hum_r1"
+      ]
+    ]
+  },
+  {
+    "id": "func_hum_r1",
+    "type": "function",
+    "z": "a82f800daf744f8e",
+    "name": "Konversi kelembapan ruang1",
+    "func": "const v=Number(msg.payload); if(!Number.isFinite(v)) return null; msg.payload=v; return msg;",
+    "outputs": 1,
+    "x": 390,
+    "y": 180,
+    "wires": [
+      [
+        "ui_hum_r1"
+      ]
+    ]
+  },
+  {
+    "id": "ui_hum_r1",
+    "type": "ui_gauge",
+    "z": "a82f800daf744f8e",
+    "name": "Gauge kelembapan ruang1",
+    "group": "group_r1",
+    "order": 1,
+    "width": "6",
+    "height": "4",
+    "gtype": "gage",
+    "title": "Kelembapan",
+    "label": "%",
+    "format": "{{value}}",
+    "min": 0,
+    "max": 100,
+    "colors": [
+      "#00b500",
+      "#e6e600",
+      "#ca3838"
+    ],
+    "seg1": "5",
+    "seg2": "10",
+    "x": 650,
+    "y": 180,
+    "wires": []
+  },
+  {
+    "id": "mqtt_stat_r1",
+    "type": "mqtt in",
+    "z": "a82f800daf744f8e",
+    "name": "Status MQTT ruang1",
+    "topic": "pens/klp7/ruang1/status",
+    "qos": "0",
+    "datatype": "auto",
+    "broker": "broker_172_20_10_2",
+    "x": 150,
+    "y": 220,
+    "wires": [
+      [
+        "func_stat_r1"
+      ]
+    ]
+  },
+  {
+    "id": "func_stat_r1",
+    "type": "function",
+    "z": "a82f800daf744f8e",
+    "name": "Format status ruang1",
+    "func": "msg.payload = (String(msg.payload).toLowerCase() === 'online') ? '🟢 ONLINE' : '🔴 OFFLINE'; return msg;",
+    "outputs": 1,
+    "x": 390,
+    "y": 220,
+    "wires": [
+      [
+        "ui_stat_r1"
+      ]
+    ]
+  },
+  {
+    "id": "ui_stat_r1",
+    "type": "ui_text",
+    "z": "a82f800daf744f8e",
+    "group": "group_r1",
+    "order": 2,
+    "width": "6",
+    "height": "1",
+    "name": "Status Ruang 1",
+    "label": "Status",
+    "format": "{{msg.payload}}",
+    "layout": "row-spread",
+    "x": 650,
+    "y": 220,
+    "wires": []
+  },
+  {
+    "id": "sw1_r1",
+    "type": "ui_switch",
+    "z": "a82f800daf744f8e",
+    "name": "Saklar ruang1 lampu1",
+    "label": "Lampu 1",
+    "group": "group_r1",
+    "order": 3,
+    "width": "3",
+    "height": "1",
+    "passthru": true,
+    "decouple": "false",
+    "topic": "pens/klp7/ruang1/lamp1",
+    "topicType": "str",
+    "onvalue": "1",
+    "onvalueType": "str",
+    "offvalue": "0",
+    "offvalueType": "str",
+    "x": 390,
+    "y": 260,
+    "wires": [
+      [
+        "997d4aeba75f49d5"
+      ]
+    ]
+  },
+  {
+    "id": "sw2_r1",
+    "type": "ui_switch",
+    "z": "a82f800daf744f8e",
+    "name": "Saklar ruang1 lampu2",
+    "label": "Lampu 2",
+    "group": "group_r1",
+    "order": 4,
+    "width": "3",
+    "height": "1",
+    "passthru": true,
+    "decouple": "false",
+    "topic": "pens/klp7/ruang1/lamp2",
+    "topicType": "str",
+    "onvalue": "1",
+    "onvalueType": "str",
+    "offvalue": "0",
+    "offvalueType": "str",
+    "x": 390,
+    "y": 300,
+    "wires": [
+      [
+        "997d4aeba75f49d5"
+      ]
+    ]
+  },
+  {
+    "id": "mqtt_hum_r2",
+    "type": "mqtt in",
+    "z": "a82f800daf744f8e",
+    "name": "MQTT kelembapan ruang2",
+    "topic": "pens/klp7/ruang2/humidity",
+    "qos": "0",
+    "datatype": "auto",
+    "broker": "broker_172_20_10_2",
+    "x": 150,
+    "y": 360,
+    "wires": [
+      [
+        "func_hum_r2"
+      ]
+    ]
+  },
+  {
+    "id": "func_hum_r2",
+    "type": "function",
+    "z": "a82f800daf744f8e",
+    "name": "Konversi kelembapan ruang2",
+    "func": "const v=Number(msg.payload); if(!Number.isFinite(v)) return null; msg.payload=v; return msg;",
+    "outputs": 1,
+    "x": 390,
+    "y": 360,
+    "wires": [
+      [
+        "ui_hum_r2"
+      ]
+    ]
+  },
+  {
+    "id": "ui_hum_r2",
+    "type": "ui_gauge",
+    "z": "a82f800daf744f8e",
+    "name": "Gauge kelembapan ruang2",
+    "group": "group_r2",
+    "order": 1,
+    "width": "6",
+    "height": "4",
+    "gtype": "gage",
+    "title": "Kelembapan",
+    "label": "%",
+    "format": "{{value}}",
+    "min": 0,
+    "max": 100,
+    "colors": [
+      "#00b500",
+      "#e6e600",
+      "#ca3838"
+    ],
+    "seg1": "5",
+    "seg2": "10",
+    "x": 650,
+    "y": 360,
+    "wires": []
+  },
+  {
+    "id": "mqtt_stat_r2",
+    "type": "mqtt in",
+    "z": "a82f800daf744f8e",
+    "name": "Status MQTT ruang2",
+    "topic": "pens/klp7/ruang2/status",
+    "qos": "0",
+    "datatype": "auto",
+    "broker": "broker_172_20_10_2",
+    "x": 150,
+    "y": 400,
+    "wires": [
+      [
+        "func_stat_r2"
+      ]
+    ]
+  },
+  {
+    "id": "func_stat_r2",
+    "type": "function",
+    "z": "a82f800daf744f8e",
+    "name": "Format status ruang2",
+    "func": "msg.payload = (String(msg.payload).toLowerCase() === 'online') ? '🟢 ONLINE' : '🔴 OFFLINE'; return msg;",
+    "outputs": 1,
+    "x": 390,
+    "y": 400,
+    "wires": [
+      [
+        "ui_stat_r2"
+      ]
+    ]
+  },
+  {
+    "id": "ui_stat_r2",
+    "type": "ui_text",
+    "z": "a82f800daf744f8e",
+    "group": "group_r2",
+    "order": 2,
+    "width": "6",
+    "height": "1",
+    "name": "Status Ruang 2",
+    "label": "Status",
+    "format": "{{msg.payload}}",
+    "layout": "row-spread",
+    "x": 650,
+    "y": 400,
+    "wires": []
+  },
+  {
+    "id": "sw1_r2",
+    "type": "ui_switch",
+    "z": "a82f800daf744f8e",
+    "name": "Saklar ruang2 lampu1",
+    "label": "Lampu 1",
+    "group": "group_r2",
+    "order": 3,
+    "width": "3",
+    "height": "1",
+    "passthru": true,
+    "decouple": "false",
+    "topic": "pens/klp7/ruang2/lamp1",
+    "topicType": "str",
+    "onvalue": "1",
+    "onvalueType": "str",
+    "offvalue": "0",
+    "offvalueType": "str",
+    "x": 390,
+    "y": 440,
+    "wires": [
+      [
+        "997d4aeba75f49d5"
+      ]
+    ]
+  },
+  {
+    "id": "sw2_r2",
+    "type": "ui_switch",
+    "z": "a82f800daf744f8e",
+    "name": "Saklar ruang2 lampu2",
+    "label": "Lampu 2",
+    "group": "group_r2",
+    "order": 4,
+    "width": "3",
+    "height": "1",
+    "passthru": true,
+    "decouple": "false",
+    "topic": "pens/klp7/ruang2/lamp2",
+    "topicType": "str",
+    "onvalue": "1",
+    "onvalueType": "str",
+    "offvalue": "0",
+    "offvalueType": "str",
+    "x": 390,
+    "y": 480,
+    "wires": [
+      [
+        "997d4aeba75f49d5"
+      ]
+    ]
+  },
+  {
+    "id": "mqtt_hum_r3",
+    "type": "mqtt in",
+    "z": "a82f800daf744f8e",
+    "name": "MQTT kelembapan ruang3",
+    "topic": "pens/klp7/ruang3/humidity",
+    "qos": "0",
+    "datatype": "auto",
+    "broker": "broker_172_20_10_2",
+    "x": 150,
+    "y": 540,
+    "wires": [
+      [
+        "func_hum_r3"
+      ]
+    ]
+  },
+  {
+    "id": "func_hum_r3",
+    "type": "function",
+    "z": "a82f800daf744f8e",
+    "name": "Konversi kelembapan ruang3",
+    "func": "const v=Number(msg.payload); if(!Number.isFinite(v)) return null; msg.payload=v; return msg;",
+    "outputs": 1,
+    "x": 390,
+    "y": 540,
+    "wires": [
+      [
+        "ui_hum_r3"
+      ]
+    ]
+  },
+  {
+    "id": "ui_hum_r3",
+    "type": "ui_gauge",
+    "z": "a82f800daf744f8e",
+    "name": "Gauge kelembapan ruang3",
+    "group": "group_r3",
+    "order": 1,
+    "width": "6",
+    "height": "4",
+    "gtype": "gage",
+    "title": "Kelembapan",
+    "label": "%",
+    "format": "{{value}}",
+    "min": 0,
+    "max": 100,
+    "colors": [
+      "#00b500",
+      "#e6e600",
+      "#ca3838"
+    ],
+    "seg1": "5",
+    "seg2": "10",
+    "x": 650,
+    "y": 540,
+    "wires": []
+  },
+  {
+    "id": "mqtt_stat_r3",
+    "type": "mqtt in",
+    "z": "a82f800daf744f8e",
+    "name": "Status MQTT ruang3",
+    "topic": "pens/klp7/ruang3/status",
+    "qos": "0",
+    "datatype": "auto",
+    "broker": "broker_172_20_10_2",
+    "x": 150,
+    "y": 580,
+    "wires": [
+      [
+        "func_stat_r3"
+      ]
+    ]
+  },
+  {
+    "id": "func_stat_r3",
+    "type": "function",
+    "z": "a82f800daf744f8e",
+    "name": "Format status ruang3",
+    "func": "msg.payload = (String(msg.payload).toLowerCase() === 'online') ? '🟢 ONLINE' : '🔴 OFFLINE'; return msg;",
+    "outputs": 1,
+    "x": 390,
+    "y": 580,
+    "wires": [
+      [
+        "ui_stat_r3"
+      ]
+    ]
+  },
+  {
+    "id": "ui_stat_r3",
+    "type": "ui_text",
+    "z": "a82f800daf744f8e",
+    "group": "group_r3",
+    "order": 2,
+    "width": "6",
+    "height": "1",
+    "name": "Status Ruang 3",
+    "label": "Status",
+    "format": "{{msg.payload}}",
+    "layout": "row-spread",
+    "x": 650,
+    "y": 580,
+    "wires": []
+  },
+  {
+    "id": "sw1_r3",
+    "type": "ui_switch",
+    "z": "a82f800daf744f8e",
+    "name": "Saklar ruang3 lampu1",
+    "label": "Lampu 1",
+    "group": "group_r3",
+    "order": 3,
+    "width": "3",
+    "height": "1",
+    "passthru": true,
+    "decouple": "false",
+    "topic": "pens/klp7/ruang3/lamp1",
+    "topicType": "str",
+    "onvalue": "1",
+    "onvalueType": "str",
+    "offvalue": "0",
+    "offvalueType": "str",
+    "x": 390,
+    "y": 620,
+    "wires": [
+      [
+        "997d4aeba75f49d5"
+      ]
+    ]
+  },
+  {
+    "id": "sw2_r3",
+    "type": "ui_switch",
+    "z": "a82f800daf744f8e",
+    "name": "Saklar ruang3 lampu2",
+    "label": "Lampu 2",
+    "group": "group_r3",
+    "order": 4,
+    "width": "3",
+    "height": "1",
+    "passthru": true,
+    "decouple": "false",
+    "topic": "pens/klp7/ruang3/lamp2",
+    "topicType": "str",
+    "onvalue": "1",
+    "onvalueType": "str",
+    "offvalue": "0",
+    "offvalueType": "str",
+    "x": 390,
+    "y": 660,
+    "wires": [
+      [
+        "997d4aeba75f49d5"
+      ]
+    ]
+  },
+  {
+    "id": "mqtt_hum_r4",
+    "type": "mqtt in",
+    "z": "a82f800daf744f8e",
+    "name": "MQTT kelembapan ruang4",
+    "topic": "pens/klp7/ruang4/humidity",
+    "qos": "0",
+    "datatype": "auto",
+    "broker": "broker_172_20_10_2",
+    "x": 150,
+    "y": 720,
+    "wires": [
+      [
+        "func_hum_r4"
+      ]
+    ]
+  },
+  {
+    "id": "func_hum_r4",
+    "type": "function",
+    "z": "a82f800daf744f8e",
+    "name": "Konversi kelembapan ruang4",
+    "func": "const v=Number(msg.payload); if(!Number.isFinite(v)) return null; msg.payload=v; return msg;",
+    "outputs": 1,
+    "x": 390,
+    "y": 720,
+    "wires": [
+      [
+        "ui_hum_r4"
+      ]
+    ]
+  },
+  {
+    "id": "ui_hum_r4",
+    "type": "ui_gauge",
+    "z": "a82f800daf744f8e",
+    "name": "Gauge kelembapan ruang4",
+    "group": "group_r4",
+    "order": 1,
+    "width": "6",
+    "height": "4",
+    "gtype": "gage",
+    "title": "Kelembapan",
+    "label": "%",
+    "format": "{{value}}",
+    "min": 0,
+    "max": 100,
+    "colors": [
+      "#00b500",
+      "#e6e600",
+      "#ca3838"
+    ],
+    "seg1": "5",
+    "seg2": "10",
+    "x": 650,
+    "y": 720,
+    "wires": []
+  },
+  {
+    "id": "mqtt_stat_r4",
+    "type": "mqtt in",
+    "z": "a82f800daf744f8e",
+    "name": "Status MQTT ruang4",
+    "topic": "pens/klp7/ruang4/status",
+    "qos": "0",
+    "datatype": "auto",
+    "broker": "broker_172_20_10_2",
+    "x": 150,
+    "y": 760,
+    "wires": [
+      [
+        "func_stat_r4"
+      ]
+    ]
+  },
+  {
+    "id": "func_stat_r4",
+    "type": "function",
+    "z": "a82f800daf744f8e",
+    "name": "Format status ruang4",
+    "func": "msg.payload = (String(msg.payload).toLowerCase() === 'online') ? '🟢 ONLINE' : '🔴 OFFLINE'; return msg;",
+    "outputs": 1,
+    "x": 390,
+    "y": 760,
+    "wires": [
+      [
+        "ui_stat_r4"
+      ]
+    ]
+  },
+  {
+    "id": "ui_stat_r4",
+    "type": "ui_text",
+    "z": "a82f800daf744f8e",
+    "group": "group_r4",
+    "order": 2,
+    "width": "6",
+    "height": "1",
+    "name": "Status Ruang 4",
+    "label": "Status",
+    "format": "{{msg.payload}}",
+    "layout": "row-spread",
+    "x": 650,
+    "y": 760,
+    "wires": []
+  },
+  {
+    "id": "sw1_r4",
+    "type": "ui_switch",
+    "z": "a82f800daf744f8e",
+    "name": "Saklar ruang4 lampu1",
+    "label": "Lampu 1",
+    "group": "group_r4",
+    "order": 3,
+    "width": "3",
+    "height": "1",
+    "passthru": true,
+    "decouple": "false",
+    "topic": "pens/klp7/ruang4/lamp1",
+    "topicType": "str",
+    "onvalue": "1",
+    "onvalueType": "str",
+    "offvalue": "0",
+    "offvalueType": "str",
+    "x": 390,
+    "y": 800,
+    "wires": [
+      [
+        "997d4aeba75f49d5"
+      ]
+    ]
+  },
+  {
+    "id": "sw2_r4",
+    "type": "ui_switch",
+    "z": "a82f800daf744f8e",
+    "name": "Saklar ruang4 lampu2",
+    "label": "Lampu 2",
+    "group": "group_r4",
+    "order": 4,
+    "width": "3",
+    "height": "1",
+    "passthru": true,
+    "decouple": "false",
+    "topic": "pens/klp7/ruang4/lamp2",
+    "topicType": "str",
+    "onvalue": "1",
+    "onvalueType": "str",
+    "offvalue": "0",
+    "offvalueType": "str",
+    "x": 390,
+    "y": 840,
+    "wires": [
+      [
+        "997d4aeba75f49d5"
+      ]
+    ]
+  },
+  {
+    "id": "92b1f88b339e48a7",
+    "type": "mqtt in",
+    "z": "a82f800daf744f8e",
+    "name": "Debug semua pesan KLP7",
+    "topic": "pens/klp7/#",
+    "qos": "0",
+    "datatype": "auto",
+    "broker": "broker_172_20_10_2",
+    "x": 150,
+    "y": 900,
+    "wires": [
+      [
+        "c70d8a1e6b2d420e"
+      ]
+    ]
+  },
+  {
+    "id": "c70d8a1e6b2d420e",
+    "type": "debug",
+    "z": "a82f800daf744f8e",
+    "name": "Semua pesan MQTT KLP7",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "x": 400,
+    "y": 900,
+    "wires": []
+  },
+  {
+    "id": "css_custom_style",
+    "type": "ui_template",
+    "z": "a82f800daf744f8e",
+    "group": "group_charts",
+    "name": "Custom CSS Tema Kuning",
+    "order": 0,
+    "width": 0,
+    "height": 0,
+    "format": "<style>\nbody { background-color: #FEFCE8; }\n.nr-dashboard-theme md-toolbar, .nr-dashboard-theme .md-toolbar-tools { background: linear-gradient(135deg, #ffc107, #ff9800) !important; color: #1e293b !important; font-weight: bold; }\nmd-card { border-radius: 12px !important; box-shadow: 0 4px 6px rgba(0,0,0,0.08) !important; border-top: 3px solid #ffc107 !important; }\n</style>",
+    "storeOutMessages": true,
+    "fwdInMessages": true,
+    "resizes": true,
+    "templateScope": "global",
+    "x": 150,
+    "y": 40,
+    "wires": [
+      []
+    ]
+  }
+]
