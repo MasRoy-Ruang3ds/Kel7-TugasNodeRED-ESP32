@@ -5,7 +5,7 @@ Proyek ini adalah tugas praktikum IoT untuk membuat prototipe sistem monitoring 
 ---
 
 ## Link Video
-* **Video Presentasi:** [Tonton Video Presentasi](hhttps://www.youtube.com/watch?v=6P_qFfroWEw) *(masukkan link youtube)*
+* **Video Presentasi:** [Tonton Video Presentasi](https://www.youtube.com/watch?v=6P_qFfroWEw) *(masukkan link youtube)*
 * **Video Demo Alat:** [Tonton Video Demo Sistem](https://www.youtube.com/watch?v=LS0XWdWO-4g) *(masukkan link youtube)*
 
 ---
