@@ -26,7 +26,7 @@
     "icon": "dashboard",
     "disabled": false,
     "hidden": false
-  },
+  } ,
   {
     "id": "group_charts",
     "type": "ui_group",
