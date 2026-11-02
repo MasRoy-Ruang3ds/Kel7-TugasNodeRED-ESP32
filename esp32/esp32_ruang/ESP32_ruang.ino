@@ -3,7 +3,6 @@
   ESP32 + potensiometer (simulasi input suhu dan kelembapan).
   Satu board mewakili satu ruangan; ganti ROOM untuk board lainnya.
   Broker lokal laptop: 172.20.10.2:1883
-
   Potensiometer: kaki luar ke 3V3 dan GND, kaki tengah ke GPIO34.
   LED1: GPIO25 -> resistor 220-330 ohm -> anoda LED; katoda ke GND.
   LED2: GPIO26 -> resistor 220-330 ohm -> anoda LED; katoda ke GND.
