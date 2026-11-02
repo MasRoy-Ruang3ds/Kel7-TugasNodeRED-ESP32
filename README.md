@@ -5,8 +5,8 @@ Proyek ini adalah tugas praktikum IoT untuk membuat prototipe sistem monitoring 
 ---
 
 ## Link Video
-* **Video Presentasi:** [Tonton Video Presentasi](https://www.youtube.com/watch?v=6P_qFfroWEw) *(masukkan link youtube)*
-* **Video Demo Alat:** [Tonton Video Demo Sistem](https://www.youtube.com/watch?v=LS0XWdWO-4g) *(masukkan link youtube)*
+* **Video Presentasi:** [Tonton Video Presentasi](https://www.youtube.com/watch?v=6P_qFfroWEw) 
+* **Video Demo Alat:** [Tonton Video Demo Sistem](https://www.youtube.com/watch?v=LS0XWdWO-4g) 
 
 ---
 
@@ -16,7 +16,7 @@ Proyek ini adalah tugas praktikum IoT untuk membuat prototipe sistem monitoring 
 |:---:|---|:---:|:---:|---|
 | 1 | Fransciskus Pandapotan Manik | 2124600114 | ruang1 & ruang2 | Setup broker Mosquitto di laptop, buat flow & UI dashboard Node-RED, koding dan uji coba ruang1 & ruang2. |
 | 2 | Muhammad Jeffry Senatriarno | 2124600109 | ruang3 | Rangkai hardware ruang3, buat laporan tugas, rapikan dokumentasi repo GitHub (README.md), ambil foto/video pengujian. |
-| 3 | Ramaida Kurnia Putri | 2124600120 | ruang4 | Rangkai komponen ESP32 ruang4 (potensiometer & 2 LED), bantu penulisan kode program Arduino, uji coba fungsional ruang4. |
+| 3 | Ramaida Kurnia Putri | 2124600120 | ruang4 | Rangkai komponen ESP32 ruang4 (potensiometer & 2 LED), bantu penulisan kode program Arduino, uji coba fungsional ruang4, mengedit video presentasi dan demo alat. |
 
 ---
 
