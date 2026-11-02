@@ -10,7 +10,7 @@
 #include <WiFi.h>
 #include <EspMQTTClient.h>
 
-// ===== CUKUP GANTI ROOM DI BAWAH INI UNTUK TIAP BOARD =====
+// ===== CUKUP GANTI ROOM DI BAWAH INI UNTUK TIAP BOARD ===
 #define KELOMPOK "klp7"
 #define ROOM     "ruang2" // ubah menjadi "ruang1", "ruang2", "ruang3", atau "ruang4"
 
